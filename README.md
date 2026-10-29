@@ -157,3 +157,5 @@ Install from the pinned `requirements.txt` inside a fresh virtual environment. A
 
 ReleaseGuard is licensed under the [PolyForm Noncommercial License 1.0.0](LICENSE).
 For commercial use, see [COMMERCIAL-LICENSE.md](COMMERCIAL-LICENSE.md).
+
+Contributions are welcome - see [CONTRIBUTING.md](CONTRIBUTING.md).

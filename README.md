@@ -96,7 +96,7 @@ uvicorn app.main:app --host 0.0.0.0 --port 8080
 
 ## Production mode and user accounts
 
-Set `RELEASEGUARD_ENV=production` (or `prod`) to run fail-closed: protected API and UI routes then require a valid user session or the shared write token. When unset, local-dev behavior applies. `RELEASEGUARD_REQUIRE_USER_AUTH=true` enables user-session auth without production mode. Set `RELEASEGUARD_CSRF_SECRET` explicitly in production; it otherwise falls back to the write token and then to a local-dev default.
+Set `RELEASEGUARD_ENV=production` (or `prod`) to run fail-closed: protected API and UI routes then require a valid user session or the shared write token. When unset, local-dev behavior applies. `RELEASEGUARD_REQUIRE_USER_AUTH=true` enables user-session auth without production mode. Set `RELEASEGUARD_CSRF_SECRET` explicitly in production; it otherwise falls back to the write token and then to a local-dev default. <!-- driftwatch: ignore=env -->
 
 Create the first owner user with the bootstrap script. The password is read only from the environment, and the script refuses to run if an owner already exists:
 

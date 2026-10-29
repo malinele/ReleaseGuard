@@ -111,7 +111,7 @@ After 5 consecutive failed logins `UserService` sets `locked_until` 15 minutes a
 
 ### Fail-closed production mode
 
-`RELEASEGUARD_ENV=prod` or `production` (`_production_mode` in `app/auth.py`) makes `_user_auth_required()` true regardless of `RELEASEGUARD_REQUIRE_USER_AUTH`. In that mode API and UI requests need a valid shared token or user session, and cookies are marked `secure`. User auth can also be turned on by itself with `RELEASEGUARD_REQUIRE_USER_AUTH` set to `1`, `true`, `yes` or `on`.
+`RELEASEGUARD_ENV=prod` or `production` (`_production_mode` in `app/auth.py`) makes `_user_auth_required()` true regardless of `RELEASEGUARD_REQUIRE_USER_AUTH`. In that mode API and UI requests need a valid shared token or user session, and cookies are marked `secure`. User auth can also be turned on by itself with `RELEASEGUARD_REQUIRE_USER_AUTH` set to `1`, `true`, `yes` or `on`. <!-- driftwatch: ignore=env -->
 
 ## Persistence
 

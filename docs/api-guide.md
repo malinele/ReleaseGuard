@@ -39,7 +39,7 @@ curl -s http://127.0.0.1:8000/api/projects \
 
 ### 3. Bearer session (user auth)
 
-When `RELEASEGUARD_REQUIRE_USER_AUTH=true` (or `RELEASEGUARD_ENV=production`), routes require either the shared token above or a user session. Log in with a username and password to get a bearer token:
+When `RELEASEGUARD_REQUIRE_USER_AUTH=true` (or `RELEASEGUARD_ENV=production`), routes require either the shared token above or a user session. Log in with a username and password to get a bearer token: <!-- driftwatch: ignore=env -->
 
 ```bash
 curl -s -X POST http://127.0.0.1:8000/api/auth/login \

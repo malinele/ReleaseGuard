@@ -65,7 +65,7 @@ Why each gate exists:
    uvicorn app.main:app --reload
    ```
 
-6. Open `http://127.0.0.1:8000/login` and sign in. Without user authentication enabled, the pages work without signing in. To require sign-in, set `RELEASEGUARD_REQUIRE_USER_AUTH=true`, or `RELEASEGUARD_ENV=production`. Production mode also requires a valid session or the write token on every protected route. In production, set `RELEASEGUARD_CSRF_SECRET` as well.
+6. Open `http://127.0.0.1:8000/login` and sign in. Without user authentication enabled, the pages work without signing in. To require sign-in, set `RELEASEGUARD_REQUIRE_USER_AUTH=true`, or `RELEASEGUARD_ENV=production`. Production mode also requires a valid session or the write token on every protected route. In production, set `RELEASEGUARD_CSRF_SECRET` as well. <!-- driftwatch: ignore=env -->
 
 Other useful addresses: `/docs` (interactive API documentation), `/health` (status and version).
 

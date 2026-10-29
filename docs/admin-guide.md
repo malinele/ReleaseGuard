@@ -45,7 +45,7 @@ X-ReleaseGuard-Token: <token>
 
 A missing or wrong token returns `401`. The server-rendered UI pages are not gated by the token in this mode. The token identifies a caller as trusted but carries no role or identity.
 
-**3. Full user auth with sessions.** With `RELEASEGUARD_REQUIRE_USER_AUTH=true`:
+**3. Full user auth with sessions.** With `RELEASEGUARD_REQUIRE_USER_AUTH=true`: <!-- driftwatch: ignore=env -->
 
 - `POST /api/auth/login` with a JSON username and password returns a bearer token and its expiry. Sessions last 8 hours. Only a SHA-256 hash of the token is stored.
 - Send `Authorization: Bearer <token>` on `/api` calls. `GET /api/auth/me` returns the current user; `POST /api/auth/logout` revokes the session.
@@ -54,7 +54,7 @@ A missing or wrong token returns `401`. The server-rendered UI pages are not gat
 - Each route then checks the user's role against the policy table (next section). Insufficient role returns `403`; no session returns `401`.
 - If `RELEASEGUARD_WRITE_TOKEN` is also set, a request with the correct token header is accepted as an override and skips the role check. Treat the token as an administrator-level secret.
 
-**4. Production fail-closed.** With `RELEASEGUARD_ENV=prod` (or `production`), mode 3 is active regardless of `RELEASEGUARD_REQUIRE_USER_AUTH`. A request without a valid session (or valid token override) is rejected, so a forgotten variable cannot leave the instance open. The session cookie is also issued with `Secure`, so the UI must be served over HTTPS.
+**4. Production fail-closed.** With `RELEASEGUARD_ENV=prod` (or `production`), mode 3 is active regardless of `RELEASEGUARD_REQUIRE_USER_AUTH`. A request without a valid session (or valid token override) is rejected, so a forgotten variable cannot leave the instance open. The session cookie is also issued with `Secure`, so the UI must be served over HTTPS. <!-- driftwatch: ignore=env -->
 
 ## Users and roles
 

@@ -15,7 +15,7 @@
         <tr>
             <td>{{ log.timestamp.strftime('%Y-%m-%d %H:%M:%S') if log.timestamp else '-' }}</td>
             <td>{{ log.actor }}</td>
-            <td>{{ log.action }}</td>
+            <td>{{ log.action.value }}</td>
             <td>{{ log.entity_type }}:{{ log.entity_id }}</td>
             <td>{{ log.before_summary }}</td>
             <td>{{ log.after_summary }}</td>

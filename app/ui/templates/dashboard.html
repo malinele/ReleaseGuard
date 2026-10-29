@@ -39,8 +39,8 @@
             <tr>
                 <td><a href="/proposals/{{ proposal.id }}">{{ proposal.proposal_id }}</a></td>
                 <td>{{ proposal.summary }}</td>
-                <td>{{ proposal.risk_level }}</td>
-                <td>{{ proposal.workflow_status }}</td>
+                <td>{{ proposal.risk_level.value }}</td>
+                <td>{{ proposal.workflow_status.value }}</td>
             </tr>
         {% endfor %}
         </tbody>
@@ -62,7 +62,7 @@
             <tr>
                 <td>{{ audit.timestamp.strftime('%Y-%m-%d %H:%M') if audit.timestamp else '-' }}</td>
                 <td>{{ audit.actor }}</td>
-                <td>{{ audit.action }}</td>
+                <td>{{ audit.action.value }}</td>
                 <td>{{ audit.entity_type }}:{{ audit.entity_id }}</td>
             </tr>
         {% endfor %}

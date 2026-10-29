@@ -28,7 +28,7 @@
                         {% for prop in proposals %}
                             {% if prop.id == pr.proposal_id %}
                                 <a href="/proposals/{{ prop.id }}">{{ prop.proposal_id }}</a>
-                                ({{ prop.workflow_status }})<br>
+                                ({{ prop.workflow_status.value }})<br>
                             {% endif %}
                         {% endfor %}
                     {% endif %}
@@ -40,7 +40,7 @@
                         {% if prop.id == ev.proposal_id %}
                             {% for pr in proposal_requirements %}
                                 {% if pr.proposal_id == prop.id and pr.requirement_id == req.id %}
-                                    <small>{{ ev.test_type }}: {{ ev.command_or_procedure[:50] }}...</small><br>
+                                    <small>{{ ev.test_type.value }}: {{ ev.command_or_procedure[:50] }}...</small><br>
                                 {% endif %}
                             {% endfor %}
                         {% endif %}

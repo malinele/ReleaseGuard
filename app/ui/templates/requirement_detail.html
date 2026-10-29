@@ -5,8 +5,8 @@
 {% block content %}
 <h2>{{ requirement.title }}</h2>
 <p><strong>ID:</strong> {{ requirement.requirement_id }}</p>
-<p><strong>Priority:</strong> {{ requirement.priority }}</p>
-<p><strong>Status:</strong> {{ requirement.status }}</p>
+<p><strong>Priority:</strong> {{ requirement.priority.value }}</p>
+<p><strong>Status:</strong> {{ requirement.status.value }}</p>
 {% if requirement.description %}
 <p>{{ requirement.description }}</p>
 {% endif %}
@@ -23,8 +23,8 @@
             <tr>
                 <td><a href="/proposals/{{ prop.id }}">{{ prop.proposal_id }}</a></td>
                 <td>{{ prop.summary }}</td>
-                <td>{{ prop.risk_level }}</td>
-                <td>{{ prop.workflow_status }}</td>
+                <td>{{ prop.risk_level.value }}</td>
+                <td>{{ prop.workflow_status.value }}</td>
             </tr>
         {% endfor %}
         </tbody>

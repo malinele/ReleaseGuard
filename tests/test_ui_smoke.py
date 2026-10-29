@@ -67,6 +67,29 @@ def test_project_page_shows_project_name(client, sample_project):
     assert sample_project["name"] in response.text
 
 
+ENUM_REPR_PREFIXES = [
+    "WorkflowStatus.",
+    "RiskLevel.",
+    "Priority.",
+    "TestType.",
+    "TestResult.",
+    "Decision.",
+    "AuditAction.",
+]
+
+
+def test_pages_do_not_leak_enum_reprs(
+    client, sample_project, sample_requirement, sample_proposal
+):
+    """Dashboard and proposal detail show enum values, not Python reprs."""
+    for path in ["/", f"/proposals/{sample_proposal['id']}"]:
+        response = client.get(path)
+
+        assert response.status_code == 200, f"{path}: {response.text}"
+        for prefix in ENUM_REPR_PREFIXES:
+            assert prefix not in response.text, f"{path} leaks {prefix}"
+
+
 @pytest.mark.parametrize(
     "path",
     ["/projects/99999", "/requirements/99999", "/proposals/99999"],

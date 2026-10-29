@@ -19,8 +19,8 @@
             <tr>
                 <td><a href="/requirements/{{ req.id }}">{{ req.requirement_id }}</a></td>
                 <td>{{ req.title }}</td>
-                <td>{{ req.priority }}</td>
-                <td>{{ req.status }}</td>
+                <td>{{ req.priority.value }}</td>
+                <td>{{ req.status.value }}</td>
             </tr>
         {% endfor %}
         </tbody>
@@ -42,8 +42,8 @@
             <tr>
                 <td><a href="/proposals/{{ prop.id }}">{{ prop.proposal_id }}</a></td>
                 <td>{{ prop.summary }}</td>
-                <td>{{ prop.risk_level }}</td>
-                <td>{{ prop.workflow_status }}</td>
+                <td>{{ prop.risk_level.value }}</td>
+                <td>{{ prop.workflow_status.value }}</td>
             </tr>
         {% endfor %}
         </tbody>

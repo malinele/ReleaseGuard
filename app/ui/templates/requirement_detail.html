@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}{{ requirement.title }} - ReleaseGuard{% endblock %}
+
+{% block content %}
+<h2>{{ requirement.title }}</h2>
+<p><strong>ID:</strong> {{ requirement.requirement_id }}</p>
+<p><strong>Priority:</strong> {{ requirement.priority }}</p>
+<p><strong>Status:</strong> {{ requirement.status }}</p>
+{% if requirement.description %}
+<p>{{ requirement.description }}</p>
+{% endif %}
+
+<section>
+    <h3>Linked Proposals</h3>
+    {% if proposals %}
+    <table>
+        <thead>
+            <tr><th>ID</th><th>Summary</th><th>Risk Level</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+        {% for prop in proposals %}
+            <tr>
+                <td><a href="/proposals/{{ prop.id }}">{{ prop.proposal_id }}</a></td>
+                <td>{{ prop.summary }}</td>
+                <td>{{ prop.risk_level }}</td>
+                <td>{{ prop.workflow_status }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No linked proposals.</p>
+    {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - ReleaseGuard{% endblock %}
+
+{% block content %}
+<h2>Dashboard</h2>
+
+<section>
+    <h3>Projects</h3>
+    {% if projects %}
+    <table>
+        <thead>
+            <tr><th>Name</th><th>Description</th><th>Created</th></tr>
+        </thead>
+        <tbody>
+        {% for project in projects %}
+            <tr>
+                <td><a href="/projects/{{ project.id }}">{{ project.name }}</a></td>
+                <td>{{ project.description }}</td>
+                <td>{{ project.created_at.strftime('%Y-%m-%d') if project.created_at else '-' }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No projects yet.</p>
+    {% endif %}
+</section>
+
+<section>
+    <h3>Recent Proposals</h3>
+    {% if recent_proposals %}
+    <table>
+        <thead>
+            <tr><th>ID</th><th>Summary</th><th>Risk Level</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+        {% for proposal in recent_proposals %}
+            <tr>
+                <td><a href="/proposals/{{ proposal.id }}">{{ proposal.proposal_id }}</a></td>
+                <td>{{ proposal.summary }}</td>
+                <td>{{ proposal.risk_level }}</td>
+                <td>{{ proposal.workflow_status }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No proposals yet.</p>
+    {% endif %}
+</section>
+
+<section>
+    <h3>Recent Audit Events</h3>
+    {% if recent_audits %}
+    <table>
+        <thead>
+            <tr><th>Timestamp</th><th>Actor</th><th>Action</th><th>Entity</th></tr>
+        </thead>
+        <tbody>
+        {% for audit in recent_audits %}
+            <tr>
+                <td>{{ audit.timestamp.strftime('%Y-%m-%d %H:%M') if audit.timestamp else '-' }}</td>
+                <td>{{ audit.actor }}</td>
+                <td>{{ audit.action }}</td>
+                <td>{{ audit.entity_type }}:{{ audit.entity_id }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No audit events yet.</p>
+    {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}{{ project.name }} - ReleaseGuard{% endblock %}
+
+{% block content %}
+<h2>{{ project.name }}</h2>
+<p>{{ project.description }}</p>
+<p><small>Created: {{ project.created_at.strftime('%Y-%m-%d') if project.created_at else '-' }}</small></p>
+
+<section>
+    <h3>Requirements</h3>
+    {% if requirements %}
+    <table>
+        <thead>
+            <tr><th>ID</th><th>Title</th><th>Priority</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+        {% for req in requirements %}
+            <tr>
+                <td><a href="/requirements/{{ req.id }}">{{ req.requirement_id }}</a></td>
+                <td>{{ req.title }}</td>
+                <td>{{ req.priority }}</td>
+                <td>{{ req.status }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No requirements for this project.</p>
+    {% endif %}
+</section>
+
+<section>
+    <h3>Proposals</h3>
+    {% if proposals %}
+    <table>
+        <thead>
+            <tr><th>ID</th><th>Summary</th><th>Risk Level</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+        {% for prop in proposals %}
+            <tr>
+                <td><a href="/proposals/{{ prop.id }}">{{ prop.proposal_id }}</a></td>
+                <td>{{ prop.summary }}</td>
+                <td>{{ prop.risk_level }}</td>
+                <td>{{ prop.workflow_status }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No proposals for this project.</p>
+    {% endif %}
+</section>
+{% endblock %}

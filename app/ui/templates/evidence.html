@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReleaseGuard - Evidence Dashboard</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        h1 { color: #333; border-bottom: 2px solid #0066cc; padding-bottom: 10px; }
+        h2 { color: #555; margin-top: 30px; }
+        .section { background: white; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .empty-state { color: #888; font-style: italic; text-align: center; padding: 40px; }
+        .evidence-item, .review-item, .decision-item, .proposal-item { border-left: 4px solid #ddd; padding: 10px 15px; margin: 10px 0; background: #fafafa; border-radius: 4px; }
+        .marker { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; margin-right: 5px; }
+        .marker-unit { background: #e3f2fd; color: #1565c0; }
+        .marker-integration { background: #e8f5e9; color: #2e7d32; }
+        .marker-security { background: #fff3e0; color: #e65100; }
+        .marker-approved { background: #e8f5e9; color: #2e7d32; }
+        .marker-passed { background: #e3f2fd; color: #1565c0; }
+        .marker-pending { background: #fff9c4; color: #f57f17; }
+        .marker-rejected { background: #ffebee; color: #c62828; }
+        .metadata { font-size: 12px; color: #888; margin-top: 5px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+        nav { background: #333; padding: 10px 20px; margin-bottom: 20px; border-radius: 8px; }
+        nav a { color: white; text-decoration: none; margin-right: 20px; }
+        nav a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="/">Dashboard</a>
+        <a href="/projects">Projects</a>
+        <a href="/evidence">Evidence</a>
+    </nav>
+    <div class="container">
+        <h1>Evidence Dashboard</h1>
+        <p>Readonly view of test evidence, security reviews, and release decisions.</p>
+
+        <div class="section">
+            <h2>Test Evidence</h2>
+            {% if test_evidence %}
+                {% for evidence in test_evidence %}
+                    <div class="evidence-item">
+                        <strong>{{ evidence.proposal_id or 'Unassigned' }}</strong>
+                        {% if evidence.test_type %}
+                            <span class="marker marker-{{ evidence.test_type.value }}">{{ evidence.test_type.value }}</span>
+                        {% endif %}
+                        {% if evidence.result %}
+                            <span class="marker marker-{{ evidence.result.value }}">{{ evidence.result.value }}</span>
+                        {% else %}
+                            <span class="marker marker-pending">Pending</span>
+                        {% endif %}
+                        <p>{{ evidence.command_or_procedure }}</p>
+                        {% if evidence.evidence_notes %}
+                            <p>{{ evidence.evidence_notes }}</p>
+                        {% endif %}
+                        <div class="metadata">
+                            Created: {{ evidence.created_at.strftime('%Y-%m-%d %H:%M') if evidence.created_at else 'N/A' }}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-state">
+                    No test evidence recorded yet. Test evidence is collected during proposal review and linked to requirements.
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="section">
+            <h2>Security Reviews</h2>
+            {% if security_reviews %}
+                {% for review in security_reviews %}
+                    <div class="review-item">
+                        <strong>{{ review.proposal_id or 'Unassigned' }}</strong>
+                        <span class="marker marker-security">Security</span>
+                        {% if review.status %}
+                            {% if review.status.value == 'passed' %}
+                                <span class="marker marker-passed">passed</span>
+                            {% elif review.status.value == 'failed' %}
+                                <span class="marker marker-rejected">failed</span>
+                            {% else %}
+                                <span class="marker marker-pending">{{ review.status.value }}</span>
+                            {% endif %}
+                        {% endif %}
+                        {% if review.reviewer %}
+                            <p>Reviewer: {{ review.reviewer }}</p>
+                        {% endif %}
+                        {% if review.notes %}
+                            <p>{{ review.notes }}</p>
+                        {% endif %}
+                        <div class="metadata">
+                            Reviewed: {{ review.created_at.strftime('%Y-%m-%d %H:%M') if review.created_at else 'N/A' }}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-state">
+                    No security reviews recorded yet. Security reviews are conducted before release decisions.
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="section">
+            <h2>Release Decisions</h2>
+            {% if release_decisions %}
+                {% for decision in release_decisions %}
+                    <div class="decision-item">
+                        <strong>{{ decision.proposal_id or 'Unassigned' }}</strong>
+                        {% if decision.decision %}
+                            {% if decision.decision.value == 'approved' %}
+                                <span class="marker marker-approved">approved</span>
+                            {% elif decision.decision.value == 'rejected' %}
+                                <span class="marker marker-rejected">rejected</span>
+                            {% else %}
+                                <span class="marker marker-pending">{{ decision.decision.value }}</span>
+                            {% endif %}
+                        {% endif %}
+                        {% if decision.decision_maker %}
+                            <p>Decision maker: {{ decision.decision_maker }}</p>
+                        {% endif %}
+                        {% if decision.decision_notes %}
+                            <p>{{ decision.decision_notes }}</p>
+                        {% endif %}
+                        <div class="metadata">
+                            Decided: {{ decision.created_at.strftime('%Y-%m-%d %H:%M') if decision.created_at else 'N/A' }}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-state">
+                    No release decisions recorded yet. Release decisions gate the workflow before deployment.
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="section">
+            <h2>Proposals</h2>
+            {% if proposals %}
+                {% for proposal in proposals %}
+                    <div class="proposal-item">
+                        <strong>{{ proposal.proposal_id }}</strong>
+                        <span class="marker marker-{{ proposal.workflow_status.value }}">{{ proposal.workflow_status.value }}</span>
+                        <p>{{ proposal.summary }}</p>
+                        <div class="metadata">
+                            ID: {{ proposal.id }} | Created: {{ proposal.created_at.strftime('%Y-%m-%d %H:%M') if proposal.created_at else 'N/A' }}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-state">
+                    No proposals found. Proposals initiate the change control workflow.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

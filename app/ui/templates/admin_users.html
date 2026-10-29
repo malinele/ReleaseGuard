@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}User Management - ReleaseGuard{% endblock %}
+
+{% block content %}
+<section>
+    <h2>User Management</h2>
+    <p>Create local ReleaseGuard users and assign one of the supported roles.</p>
+
+    {% if error %}
+    <div class="flash" role="alert">{{ error }}</div>
+    {% endif %}
+    {% if message %}
+    <div class="flash">{{ message }}</div>
+    {% endif %}
+
+    <h3>Create user</h3>
+    <form method="post" action="/admin/users">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <p>
+            <label for="username">Username</label><br>
+            <input id="username" name="username" type="text" autocomplete="username" required>
+        </p>
+        <p>
+            <label for="display_name">Display name</label><br>
+            <input id="display_name" name="display_name" type="text" autocomplete="name">
+        </p>
+        <p>
+            <label for="password">Password</label><br>
+            <input id="password" name="password" type="password" autocomplete="new-password" required>
+        </p>
+        <p>
+            <label for="role">Role</label><br>
+            <select id="role" name="role">
+                {% for role in roles %}
+                <option value="{{ role }}">{{ role }}</option>
+                {% endfor %}
+            </select>
+        </p>
+        <button class="btn" type="submit">Create user</button>
+    </form>
+
+    <h3>Existing users</h3>
+    {% if users %}
+    <table>
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Display name</th>
+                <th>Role</th>
+                <th>Active</th>
+                <th>Lockout</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.username }}</td>
+                <td>{{ user.display_name or "" }}</td>
+                <td>{{ user.role }}</td>
+                <td>{{ "yes" if user.is_active else "no" }}</td>
+                <td>{{ "locked" if user.id in locked_user_ids else "unlocked" }}</td>
+                <td>
+                    {% if user.id in locked_user_ids %}
+                    <form method="post" action="/admin/users/{{ user.id }}/unlock">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                        <button class="btn" type="submit">Unlock</button>
+                    </form>
+                    {% endif %}
+                    <form method="post" action="/admin/users/{{ user.id }}/password">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                        <label for="new_password_{{ user.id }}">New password</label><br>
+                        <input
+                            id="new_password_{{ user.id }}"
+                            name="new_password"
+                            type="password"
+                            autocomplete="new-password"
+                            required
+                        >
+                        <button class="btn" type="submit">Reset password</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No local users exist yet.</p>
+    {% endif %}
+</section>
+{% endblock %}

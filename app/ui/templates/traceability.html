@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Traceability Matrix - ReleaseGuard{% endblock %}
+
+{% block content %}
+<h2>Traceability Matrix</h2>
+<p>Requirements → Proposals → Test Evidence</p>
+
+{% if requirements %}
+<table>
+    <thead>
+        <tr>
+            <th>Requirement</th>
+            <th>Proposals</th>
+            <th>Test Evidence</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for req in requirements %}
+        <tr>
+            <td>
+                <a href="/requirements/{{ req.id }}">{{ req.requirement_id }}</a>
+                <br><small>{{ req.title }}</small>
+            </td>
+            <td>
+                {% for pr in proposal_requirements %}
+                    {% if pr.requirement_id == req.id %}
+                        {% for prop in proposals %}
+                            {% if prop.id == pr.proposal_id %}
+                                <a href="/proposals/{{ prop.id }}">{{ prop.proposal_id }}</a>
+                                ({{ prop.workflow_status }})<br>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+            </td>
+            <td>
+                {% for ev in test_evidence %}
+                    {% for prop in proposals %}
+                        {% if prop.id == ev.proposal_id %}
+                            {% for pr in proposal_requirements %}
+                                {% if pr.proposal_id == prop.id and pr.requirement_id == req.id %}
+                                    <small>{{ ev.test_type }}: {{ ev.command_or_procedure[:50] }}...</small><br>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No requirements found.</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Login - ReleaseGuard{% endblock %}
+
+{% block content %}
+<section>
+    <h2>Sign in</h2>
+    <p>Use a local ReleaseGuard user account to access protected UI pages.</p>
+
+    {% if error %}
+    <div class="flash" role="alert">{{ error }}</div>
+    {% endif %}
+
+    <form method="post" action="/login">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <p>
+            <label for="username">Username</label><br>
+            <input id="username" name="username" type="text" autocomplete="username" required>
+        </p>
+        <p>
+            <label for="password">Password</label><br>
+            <input id="password" name="password" type="password" autocomplete="current-password" required>
+        </p>
+        <button class="btn" type="submit">Sign in</button>
+    </form>
+</section>
+{% endblock %}

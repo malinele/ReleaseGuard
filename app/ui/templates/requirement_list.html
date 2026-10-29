@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Requirements - ReleaseGuard{% endblock %}
+
+{% block content %}
+<h2>All Requirements</h2>
+
+{% if requirements %}
+<table>
+    <thead>
+        <tr><th>ID</th><th>Title</th><th>Project</th><th>Priority</th><th>Status</th></tr>
+    </thead>
+    <tbody>
+    {% for req in requirements %}
+        <tr>
+            <td><a href="/requirements/{{ req.id }}">{{ req.requirement_id }}</a></td>
+            <td>{{ req.title }}</td>
+            <td>{{ req.project_id }}</td>
+            <td>{{ req.priority }}</td>
+            <td>{{ req.status }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No requirements found.</p>
+{% endif %}
+{% endblock %}

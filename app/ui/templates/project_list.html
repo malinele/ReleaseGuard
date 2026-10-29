@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Projects - ReleaseGuard{% endblock %}
+
+{% block content %}
+<h2>All Projects</h2>
+
+{% if projects %}
+<table>
+    <thead>
+        <tr><th>Name</th><th>Description</th><th>Created</th></tr>
+    </thead>
+    <tbody>
+    {% for project in projects %}
+        <tr>
+            <td><a href="/projects/{{ project.id }}">{{ project.name }}</a></td>
+            <td>{{ project.description }}</td>
+            <td>{{ project.created_at.strftime('%Y-%m-%d') if project.created_at else '-' }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No projects found.</p>
+{% endif %}
+{% endblock %}
